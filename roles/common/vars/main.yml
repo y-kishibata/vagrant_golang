@@ -1,0 +1,4 @@
+---
+epel_repo_url: http://ftp-srv2.kddilabs.jp/Linux/distributions/fedora/epel/6/x86_64/epel-release-6-8.noarch.rpm
+epel_download_dir: /var/ansible
+epel_download_path: /var/ansible/epel.rpm

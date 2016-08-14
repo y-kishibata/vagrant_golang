@@ -1,0 +1,34 @@
+---
+- name: create directory for epel
+  file: path={{ epel_download_dir }} state=directory
+
+- name: download epel rpm
+  get_url: url={{ epel_repo_url }} dest={{ epel_download_path }}
+
+- name: install epel
+  yum: name={{ epel_download_path }}
+
+- name: install gcc
+  yum: name=gcc state=installed
+
+- name: install git
+  yum: name=git state=installed
+
+- name: install misc packages
+  yum: name={{ item }} state=installed
+  with_items:
+    - man
+    - vim-enhanced
+    - wget
+    - lsof
+    - htop
+    - iotop
+    - nmap
+
+- name: create directory to install apps
+  file: path=/opt state=directory
+
+- name: ensure path.sh exists
+  copy: dest=/etc/profile.d/path.sh src=../files/path.sh
+
+- include: advanced_tools.yml

@@ -1,0 +1,31 @@
+---
+- name: check if go is already installed
+  stat: path=/usr/local/go/bin/go
+  register: go_result
+  ignore_errors: true
+
+- name: download and extract go tar ball
+  unarchive: copy=no src={{ go_tarball_url }} dest=/usr/local
+  when: go_result.stat.exists == false
+
+- name: create directory for go
+  file: path=/opt/go state=directory
+
+- name: copy go.sh
+  copy: dest=/etc/profile.d/go.sh src=../files/go.sh
+
+# - name: install go tools
+#   command: /bin/bash -lc "go get {{ item }}"
+#   async: 600
+#   poll: 10
+#   with_items:
+#     - github.com/klauspost/asmfmt
+#     - github.com/kisielk/errcheck
+#     - github.com/nsf/gocode
+#     - github.com/rogpeppe/godef
+#     - golang.org/x/tools/cmd/goimports
+#     - github.com/golang/lint/golint
+#     - github.com/alecthomas/gometalinter
+#     - golang.org/x/tools/refactor/rename
+#     - github.com/jstemmer/gotags
+#     - golang.org/x/tools/cmd/oracle
